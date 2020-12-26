@@ -15,7 +15,7 @@ class CalendarsController < ApplicationController
   private
 
   def plan_params
-    params.require(:calendars).permit(:date, :plan)
+    params.require(:plan).permit(:date, :plan)
   end
 
   def get_week
@@ -27,14 +27,17 @@ class CalendarsController < ApplicationController
 
     @week_days = []
 
-    plans = Plan.where(date: @todays_date..@todays_date + 6)
+    plans = Plan.where(date: @todays_date..@todays_date + 6) # ..（範囲オブジェクト）=> 最大値を含む範囲オブジェクトを作る
 
     7.times do |x|
       today_plans = []
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      days = {month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans}
+
+      days = { month: (@todays_date + x).month, date: (@todays_date + x).day, plans: today_plans, wday: wdays[(@todays_date + x).wday]}
+      #今日が日曜日であればDate.today.wdayの値は0、今日が月曜日であればDate.today.wdayの値は1です。このように、日曜を0とし、そこから土曜まで6までの数字を戻り値とします。
+      #配列から値を取り出す場合も1番目は配列[0]、2番目は配列[1]のように書く
       @week_days.push(days)
     end
 
