@@ -35,7 +35,7 @@ class CalendarsController < ApplicationController
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
 
-      days = { :month => (@todays_date + x).month, :date => (@todays_date + x).day, :plans => today_plans, :wday => wdays[(@todays_date + x).wday]}
+      days = { month: (@todays_date + x).month, date: (@todays_date + x).day, plans: today_plans, wday: wdays[(@todays_date + x).wday]}
       #今日が日曜日であればDate.today.wdayの値は0、今日が月曜日であればDate.today.wdayの値は1です。このように、日曜を0とし、そこから土曜まで6までの数字を戻り値とします。
       #配列から値を取り出す場合も1番目は配列[0]、2番目は配列[1]のように書く
       @week_days.push(days)
